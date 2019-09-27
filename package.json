@@ -1,0 +1,20 @@
+{
+  "name": "monops",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "monops",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:moonkeys-labs/moonkeys-ops.git"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development node index.js"
+  },
+  "author": "moonkeys.io",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {}
+}

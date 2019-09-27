@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  traefik:
+    image: traefik:v2.0.1
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.toml:/etc/traefik/traefik.toml
+    networks:
+      - myapp
+    ports:
+      - 80:80
+      - 443:443
+  app:
+    build: .
+    restart: always
+    networks:
+      - myapp
+    labels:
+      - traefik.enable=true
+      - "traefik.frontend.rule=Host:monops.moonkeys.io"
+
+networks:
+  myapp:
+    external: true

@@ -1,0 +1,27 @@
+debug = false
+logLevel = "ERROR"
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entrypoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+
+[retry]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "docker.localhost"
+exposedByDefault = false
+
+[acme]
+email = "guillermo@moonkeys.io"
+storage = "acme/certs.json"
+entryPoint = "https"
+onHostRule = true
+[acme.httpChallenge]
+entryPoint = "http"
