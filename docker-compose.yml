@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   traefik:
-    image: traefik:v2.0.1
+    image: traefik:v1.7.18
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -11,6 +11,41 @@ services:
     ports:
       - 80:80
       - 443:443
+    links:
+      - fluentd
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: httpd.access
+
+  fluentd:
+    build: ./fluentd
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    links:
+      - "elasticsearch"
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+
+  elasticsearch:
+      image: elasticsearch:7.3.2
+      environment:
+        - "discovery.type=single-node"
+        - 'bootstrap.memory_lock=true'
+      expose:
+        - 9200
+      ports:
+        - "9200:9200"
+
+  kibana:
+    image: kibana:7.3.2
+    links:
+      - "elasticsearch"
+    ports:
+      - "5601:5601"
+
   app:
     build: .
     restart: always
